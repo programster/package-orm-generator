@@ -1,0 +1,24 @@
+{
+    "name": "programster/orm-generator",
+    "type": "library",
+    "description": "Library to make developing for AWS much easier",
+    "keywords": ["ORM"],
+    "homepage": "https://github.com/programster/package-orm-generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stuart Page",
+            "email": "sdpagent@gmail.com",
+            "homepage": "https://blog.programster.org/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+    },
+    "autoload": {
+        "psr-4": {
+            "Programster\\OrmGenerator\\": "src/"
+        }
+    }
+}
