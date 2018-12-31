@@ -1,7 +1,7 @@
 {
     "name": "programster/orm-generator",
     "type": "library",
-    "description": "Library to make developing for AWS much easier",
+    "description": "This package automates the creation of the table and object files for each of your database tables when you are using the iRAP/MysqlObjects package.",
     "keywords": ["ORM"],
     "homepage": "https://github.com/programster/package-orm-generator",
     "license": "MIT",
