@@ -81,20 +81,6 @@ class <?= $this->m_objectClassName; ?> extends AbstractTableRowObject
     }
 
 
-    public function toArray() : array
-    {
-        return array(
-<?php
-            foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
-            {
-                $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
-                print '            "' . $databaseFieldName . '" => $this->m_' . $camelCaseFieldName . ',' . PHP_EOL;
-            }
-?>
-        );
-    }
-
-
     public function validateInputs(array $data) : array
     {
         return $data;
