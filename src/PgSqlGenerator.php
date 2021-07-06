@@ -35,7 +35,7 @@ class PgSqlGenerator
 
             $baseFilename = $this->convertTableNameToFilename($tableName);
             $tableClassName = $baseFilename . "Table";
-            $objectClassName = $baseFilename . "Object";
+            $objectClassName = $baseFilename . "Record";
 
             $objectClassCreator = new ObjectClassCreator($objectClassName, $tableClassName, $fields);
             $tableClassCreator = new TableClassCreator($tableClassName, $objectClassName, $tableName);
