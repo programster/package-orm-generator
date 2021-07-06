@@ -51,7 +51,7 @@ class <?= $this->m_objectClassName; ?> extends AbstractTableRowObject
 <?php
         foreach ($this->m_camelCaseFieldNames as $fieldName)
         {
-            print '    private $m_' . $fieldName . ';' . PHP_EOL;
+            print '    protected $m_' . $fieldName . ';' . PHP_EOL;
         }
     ?>
 
