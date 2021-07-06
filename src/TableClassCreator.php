@@ -25,31 +25,31 @@ class TableClassCreator extends AbstractView
 
 class <?= $this->m_tableClassName; ?> extends AbstractTable
 {
-    public function getObjectClassName()
+    public function getObjectClassName() : string
     {
         return __NAMESPACE__ . '\<?= $this->m_objectClassName; ?>';
     }
 
 
-    public function getTableName()
+    public function getTableName() : string
     {
         return '<?= $this->m_tableName ?>';
     }
 
 
-    public function validateInputs(array $data)
+    public function validateInputs(array $data) : array
     {
         return $data;
     }
 
 
-    public function getFieldsThatAllowNull()
+    public function getFieldsThatAllowNull() : array
     {
         return array();
     }
 
 
-    public function getFieldsThatHaveDefaults()
+    public function getFieldsThatHaveDefaults() : array
     {
         return array();
     }
