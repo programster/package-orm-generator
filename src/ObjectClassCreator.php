@@ -5,19 +5,41 @@ namespace Programster\OrmGenerator;
 
 class ObjectClassCreator extends AbstractView
 {
-    private $m_fields;
+    private $m_databaseFieldNames;
+    private $m_camelCaseFieldNames;
     private $m_tableClassName;
     private $m_objectClassName;
-    
-    
-    public function __construct(string $objectClassName, string $tableClassName, array $fieldNames)
+
+
+    public function __construct(string $objectClassName, string $tableClassName, array $databaseFieldNames)
     {
         $this->m_objectClassName = $objectClassName;
         $this->m_tableClassName = $tableClassName;
-        $this->m_fields = $fieldNames;
+        $this->m_databaseFieldNames = $databaseFieldNames;
+        $this->m_camelCaseFieldNames = $this->convertFieldNamesToCamelCase(...$databaseFieldNames);
     }
-    
-    
+
+
+    /**
+     * Convert any words like hello_world to camelCase like "helloWorld"
+     * @param string $inputs - any number of input strings
+     * @return array - the converted strings.
+     */
+    private function convertFieldNamesToCamelCase(string ...$inputs) : array
+    {
+        $outputs = [];
+
+        foreach ($inputs as $input)
+        {
+            $change1 = ucwords($input, "_");
+            $change2 = lcfirst($change1);
+            $outputs[] = str_replace("_", "", $change2);
+        }
+
+        return $outputs;
+    }
+
+
     protected function renderContent()
     {
 print '<?php' . PHP_EOL . PHP_EOL;
@@ -27,96 +49,86 @@ print '<?php' . PHP_EOL . PHP_EOL;
 class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResourceObject
 {
 <?php
-        foreach ($this->m_fields as $fieldName)
+        foreach ($this->m_camelCaseFieldNames as $fieldName)
         {
             print '    private $m_' . $fieldName . ';' . PHP_EOL;
         }
     ?>
-    
-    
-    public function __construct($row, $row_field_types=null) 
-    {
-        $this->initializeFromArray($row, $row_field_types);
-    }
-    
-    
-    protected function getAccessorFunctions() 
+
+
+    protected function getAccessorFunctions()
     {
         return array(
 <?php
-            foreach ($this->m_fields as $fieldName)
+            foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
             {
-                print '            "' . $fieldName . '" => function() { return $this->m_' . $fieldName . '; },' . PHP_EOL;
+                $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
+                print '            "' . $databaseFieldName . '" => function() { return $this->m_' . $camelCaseFieldName . '; },' . PHP_EOL;
             }?>
         );
     }
-    
-    protected function getSetFunctions() 
+
+    protected function getSetFunctions()
     {
         return array(
 <?php
-            foreach($this->m_fields as $fieldName)
+            foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
             {
-                print '            "' . $fieldName . '" => function() { $this->m_' . $fieldName . ' = $x; },' . PHP_EOL;
+                $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
+                print '            "' . $databaseFieldName . '" => function() { $this->m_' . $camelCaseFieldName . ' = $x; },' . PHP_EOL;
             }?>
         );
     }
-    
-    
-    public function getPublicArray() 
+
+
+    public function getPublicArray()
     {
         return array(
 <?php
-            foreach($this->m_fields as $fieldName)
+            foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
             {
-                print '            "' . $fieldName . '" => $this->m_' . $fieldName . ',' . PHP_EOL;
+                $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
+                print '            "' . $databaseFieldName . '" => $this->m_' . $camelCaseFieldName . ',' . PHP_EOL;
             }
 ?>
         );
     }
-    
-    
-    /**
-     * 
-     * @param array $data
-     */
-    protected static function filter_inputs(array $data) 
+
+
+    public function validateInputs(array $data)
     {
         return $data;
     }
-    
-    public function validateInputs(array $data) 
-    { 
-        return $data; 
+
+
+    protected function filterInputs(array $data)
+    {
+        return $data;
     }
-    
-    
-    protected function filterInputs(array $data) 
-    { 
-        return $data; 
+
+
+    public function getTableHandler()
+    {
+        return <?= $this->m_tableClassName; ?>::getInstance();
     }
-    
-    
-    public function getTableHandler() 
-    { 
-        return <?= $this->m_tableClassName; ?>::getInstance(); 
-    }
-    
-    
+
+
     # Accessors
 <?php
-    foreach($this->m_fields as $fieldName)
+    foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
     {
-        print '    public function get_' . $fieldName . '() { return $this->m_' . $fieldName . '; }' . PHP_EOL;
+        $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
+        print '    public function get' . ucfirst($camelCaseFieldName) . '() { return $this->m_' . $camelCaseFieldName . '; }' . PHP_EOL;
     }
 ?>
-    
-    
+
+
     # Setters
 <?php
-    foreach ($this->m_fields as $fieldName)
+    foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
     {
-        print '    public function set_' . $fieldName . '($x) { $this->m_' . $fieldName . ' = $x; }' . PHP_EOL;
+        $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
+        print '    public function set' . ucfirst($camelCaseFieldName) . '($x) { $this->m_' . $camelCaseFieldName . ' = $x; }' . PHP_EOL;
     }
     ?>
 }
