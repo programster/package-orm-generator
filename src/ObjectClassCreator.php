@@ -46,7 +46,7 @@ print '<?php' . PHP_EOL . PHP_EOL;
 ?>
 
 
-class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResourceObject
+class <?= $this->m_objectClassName; ?> extends AbstractTableRowObject
 {
 <?php
         foreach ($this->m_camelCaseFieldNames as $fieldName)
@@ -56,7 +56,7 @@ class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResour
     ?>
 
 
-    protected function getAccessorFunctions()
+    protected function getAccessorFunctions() : array
     {
         return array(
 <?php
@@ -68,7 +68,7 @@ class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResour
         );
     }
 
-    protected function getSetFunctions()
+    protected function getSetFunctions() : array
     {
         return array(
 <?php
@@ -81,7 +81,7 @@ class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResour
     }
 
 
-    public function getPublicArray()
+    public function toArray() : array
     {
         return array(
 <?php
@@ -95,19 +95,19 @@ class <?= $this->m_objectClassName; ?> extends \iRAP\MysqlObjects\AbstractResour
     }
 
 
-    public function validateInputs(array $data)
+    public function validateInputs(array $data) : array
     {
         return $data;
     }
 
 
-    protected function filterInputs(array $data)
+    protected function filterInputs(array $data) : array
     {
         return $data;
     }
 
 
-    public function getTableHandler()
+    public function getTableHandler() : TableInterface
     {
         return <?= $this->m_tableClassName; ?>::getInstance();
     }
