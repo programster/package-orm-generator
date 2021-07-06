@@ -54,11 +54,6 @@ class <?= $this->m_tableClassName; ?> extends AbstractTable
         return array();
     }
 }
-
-
-
-
-
 <?php
     }
 
