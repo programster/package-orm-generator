@@ -75,7 +75,7 @@ class <?= $this->m_objectClassName; ?> extends AbstractTableRowObject
             foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
             {
                 $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
-                print '            "' . $databaseFieldName . '" => function() { $this->m_' . $camelCaseFieldName . ' = $x; },' . PHP_EOL;
+                print '            "' . $databaseFieldName . '" => function($x) { $this->m_' . $camelCaseFieldName . ' = $x; },' . PHP_EOL;
             }?>
         );
     }
@@ -114,7 +114,7 @@ class <?= $this->m_objectClassName; ?> extends AbstractTableRowObject
     foreach ($this->m_databaseFieldNames as $index => $databaseFieldName)
     {
         $camelCaseFieldName = $this->m_camelCaseFieldNames[$index];
-        print '    public function set' . ucfirst($camelCaseFieldName) . '($x) { $this->m_' . $camelCaseFieldName . ' = $x; }' . PHP_EOL;
+        print '    public function set' . ucfirst($camelCaseFieldName) . '($x) : void { $this->m_' . $camelCaseFieldName . ' = $x; }' . PHP_EOL;
     }
     ?>
 }
