@@ -1,5 +1,9 @@
 This package is here to take the tediousness out of having to create a table and object file for each of your database tables when you are using the [programster/mysql-objects](https://packagist.org/packages/programster/mysql-objects) or [programster/pgsql-objects](https://packagist.org/packages/programster/pgsql-objects) packages for interfacing with your database.
 
+## Install
+```bash
+composer require programster/orm-generator
+```
 
 ## Usage
 Write a small script to load the database setings and specify where the generated files should be put.
